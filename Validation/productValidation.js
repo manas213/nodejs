@@ -16,7 +16,7 @@ exports.productValidation = (req, res, next) => {
     .withMessage("Count must be a number");
 
   req
-    .check("product_dec", "Product description is required")
+    .check("product_desc", "Product description is required")
     .notEmpty()
     .isLength({ min: 20 })
     .withMessage("Description must be atleast 20 characters in length");
