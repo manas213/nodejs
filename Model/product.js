@@ -47,4 +47,4 @@ const productSchema = new mongoose.Schema(
 //createdAt
 //updatedAt
 
-module.exports = mongoose.model("Products", productSchema);
+module.exports = mongoose.model("Product", productSchema);

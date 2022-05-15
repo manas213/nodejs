@@ -17,12 +17,12 @@ exports.addCategory = async (req, res) => {
       if (data == null) {
         category = await category.save(); //awaits until the category is saved
         if (!category) {
-          return res.status(400).json({ error: "Something went wrong." });
+          return res.sendStatus(400).json({ error: "Something went wrong." });
         } else {
-          res.send(category);
+          return res.send(category);
         }
       }
-      return res.status(400).json({ error: "Category already exists." });
+      return res.sendStatus(400).json({ error: "Category already exists." });
     }
   );
 };
@@ -31,18 +31,47 @@ exports.addCategory = async (req, res) => {
 exports.showCategories = async (req, res) => {
   let categories = await Category.find();
   if (!categories) {
-    return res.status(400).json({ error: "Something went wrong." });
+    return res.sendStatus(400).json({ error: "Something went wrong." });
   } else {
-    res.send(categories);
+    return res.send(categories);
   }
 };
 
 // to view a category
 exports.findCategory = async (req, res) => {
-  let category = await Category.findById(req.params.id);    // let category = await Category({_id: req.params.id});
+  let category = await Category.findById(req.params.id); // let category = await Category({_id: req.params.id});
   if (!category) {
-    return res.status(400).json({ error: "Something went wrong." });
+    return res.sendStatus(400).json({ error: "Something went wrong." });
   } else {
-    res.send(category);
+    return res.send(category);
   }
+};
+
+// to update a category
+exports.updateCategory = async (req, res) => {
+  let category = await Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      category_name: req.body.category_name,
+    },
+    { new: true }
+  );
+  if (!category) {
+    return res.sendStatus(400).json({ error: "Something went wrong" });
+  } else {
+    return res.send(category);
+  }
+};
+
+// to delete a category
+exports.deleteCategory = (req, res) => {
+  Category.findByIdAndRemove(req.params.id)
+    .then((category) => {
+      if (!category) {
+        return res.status(400).json({ error: "Category not found" });
+      } else {
+        return res.status(200).json({ msg: "Category deleted successfully" });
+      }
+    })
+    .catch((error) => res.sendStatus(400).json({ error: error }));
 };

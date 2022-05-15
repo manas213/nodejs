@@ -1,7 +1,7 @@
 // product validation
 
 exports.productValidation = (req, res, next) => {
-  req.check('product_name','Product name is required').notEmpty()
+  req.check("product_name", "Product name is required").notEmpty();
 
   req
     .check("product_price", "Price is required")
@@ -26,7 +26,7 @@ exports.productValidation = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) {
     const showError = errors.map((err) => err.msg)[0];
-    return res.status(400).json({ error: showError });
+    return res.sendStatus(400).json({ error: showError });
   }
   next();
 };
