@@ -19,7 +19,11 @@ exports.addProduct = async (req, res) => {
 
 // to show all products
 exports.showProducts = async (req, res) => {
-  let products = await Product.find().populate("category");
+  let order = req.query.order ? req.query.order : 1
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id"
+  let limit = req.query.limit ? parseInt(req.query.limit) : 20000
+
+  let products = await Product.find().populate("category").sort([[sortBy, order]]).limit(limit)
   if (!products) {
     return res.status(400).json({ error: "Something went wrong." });
   } else {
